@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rice Plant Disease Detector</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🌾 Rice Plant Disease Detector</h1>
+
+    <div class="upload-section">
+      <input type="file" id="imageInput" accept="image/*" />
+      <button id="cameraBtn">📷 Use Camera</button>
+      <video id="cameraView" autoplay playsinline style="display:none;"></video>
+      <button id="captureBtn" style="display:none;">Capture Leaf</button>
+    </div>
+
+    <div class="preview">
+      <img id="previewImage" src="" alt="Preview" />
+    </div>
+
+    <button id="predictBtn">🔍 Predict Disease</button>
+
+    <div class="result" id="resultBox">
+      <h2>Prediction Result</h2>
+      <p><strong>Disease:</strong> <span id="diseaseName">--</span></p>
+      <p><strong>Confidence:</strong> <span id="confidence">--</span></p>
+
+      <div class="card" id="treatmentCard">
+        <h3>Treatment</h3>
+        <p id="treatment">--</p>
+      </div>
+
+      <div class="card" id="schemeCard">
+        <h3>Government Schemes</h3>
+        <ul id="schemes"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
