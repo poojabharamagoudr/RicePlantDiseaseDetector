@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: rice-plant-disease-detector
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: MODEL_PATH
+        value: ../model/rice_disease_mobilenetv2.h5
