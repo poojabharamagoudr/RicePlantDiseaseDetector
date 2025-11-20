@@ -6,6 +6,22 @@ const diseaseName = document.getElementById("diseaseName");
 const confidence = document.getElementById("confidence");
 const treatment = document.getElementById("treatment");
 const schemesDiv = document.getElementById("schemes");
+const messageP = document.getElementById("message");
+
+// -------------------------------
+// API base URL (configurable at deploy time)
+// - Set a meta tag <meta name="api-base-url" content="https://api.example.com"> in `index.html`.
+// - If the meta tag is empty or missing, the code falls back to same-origin.
+// -------------------------------
+const metaApi = document.querySelector('meta[name="api-base-url"]');
+const API_BASE_RAW = metaApi ? (metaApi.getAttribute('content') || '').trim() : '';
+const API_BASE = API_BASE_RAW.replace(/\/$/, ''); // remove trailing slash
+
+function apiUrl(path) {
+  if (!path.startsWith('/')) path = '/' + path;
+  if (!API_BASE) return path; // same-origin
+  return API_BASE + path;
+}
 
 const cameraBtn = document.getElementById("cameraBtn");
 const cameraView = document.getElementById("cameraView");
@@ -38,6 +54,16 @@ captureBtn.addEventListener("click", () => {
     capturedImageBlob = blob;
     previewImage.src = URL.createObjectURL(blob);
     previewImage.style.display = "block";
+    // Stop camera stream after capture
+    try {
+      if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+      }
+    } catch (err) {
+      console.warn('Could not stop stream', err);
+    }
+    cameraView.style.display = "none";
+    captureBtn.style.display = "none";
   }, "image/jpeg");
 });
 
@@ -64,21 +90,42 @@ predictBtn.addEventListener("click", async () => {
   resultBox.style.display = "none";
 
   try {
-    const res = await fetch("http://127.0.0.1:5000/predict", {
+    const res = await fetch(apiUrl('/predict'), {
       method: "POST",
       body: formData
     });
     const data = await res.json();
 
-    diseaseName.textContent = data.label || "Unknown";
-    confidence.textContent = (data.confidence * 100).toFixed(2) + "%";
-    treatment.textContent = data.treatment || "No treatment info.";
+    // Clear previous message
+    messageP.style.display = "none";
+    messageP.textContent = "";
 
-    schemesDiv.innerHTML = "";
-    if (data.schemes && data.schemes.length > 0) {
-      schemesDiv.innerHTML = "<strong>Government Schemes:</strong><ul>" +
-        data.schemes.map(s => `<li>${s}</li>`).join("") +
-        "</ul>";
+    const label = data.label || "Unknown";
+    const conf = typeof data.confidence === 'number' ? data.confidence : 0;
+    const govtSchemes = data.govt_schemes || data.schemes || [];
+
+    diseaseName.textContent = label;
+
+    if (label === "Unknown Image" || label.toLowerCase().includes('unknown')) {
+      // Non-leaf / unknown
+      confidence.textContent = "--";
+      treatment.textContent = "";
+      schemesDiv.innerHTML = "";
+      // Show backend message if present
+      if (data.message) {
+        messageP.textContent = data.message;
+        messageP.style.display = "block";
+      }
+    } else {
+      confidence.textContent = (conf * 100).toFixed(2) + "%";
+      treatment.textContent = data.treatment || "No treatment info.";
+
+      schemesDiv.innerHTML = "";
+      if (govtSchemes && govtSchemes.length > 0) {
+        schemesDiv.innerHTML = "<strong>Government Schemes:</strong><ul>" +
+          govtSchemes.map(s => `<li>${s}</li>`).join("") +
+          "</ul>";
+      }
     }
 
     resultBox.style.display = "block";
