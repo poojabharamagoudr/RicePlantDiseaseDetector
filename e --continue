@@ -1,0 +1,9 @@
+[33m9467a140[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/main[m[33m)[m Delete backend/__pycache__/detector.cpython-312.pyc
+[33m56e11095[m Deleted unnecessary test and cache files
+[33mbe0be77a[m Deleted unnecessary test and cache files
+[33m5d6fb9b0[m Set Python version for Render
+[33m01959760[m Fix: updated Pillow and TensorFlow versions for Render compatibility
+[33m3ef00e0a[m Moved requirements.txt to root for Render deployment
+[33mb9b70d52[m Added Render deployment config
+[33m02eac308[m Add project description for Rice Plant Disease Detector
+[33ma5a1c5a3[m Add files via upload
