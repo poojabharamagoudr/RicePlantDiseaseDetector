@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Misclassified Samples</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:16px}
+    .card{display:inline-block;width:420px;border:1px solid #ddd;margin:8px;padding:8px;vertical-align:top}
+    img{max-width:100%;height:auto;display:block;margin-bottom:6px}
+    .meta{font-size:13px;color:#222}
+  </style>
+</head>
+<body>
+  <h2>Misclassified Samples (from backend/eval_summary.txt)</h2>
+  <p>Click an image to open the original file. If images do not display, verify the exact path exists on this machine.</p>
+
+  <!-- NOTE: These entries were extracted from backend/eval_summary.txt -->
+
+  <div class="card">
+    <a href="file:///C:/Users/pooja/Desktop/Riceplantdiseasedetector/data/val/Healthy Rice Leaf/20231006_163740.jpg" target="_blank">
+      <img src="file:///C:/Users/pooja/Desktop/Riceplantdiseasedetector/data/val/Healthy Rice Leaf/20231006_163740.jpg" alt="20231006_163740.jpg">
+    </a>
+    <div class="meta"><strong>Actual:</strong> Healthy Rice Leaf &nbsp; <strong>Pred:</strong> Brown Spot &nbsp; <strong>Conf:</strong> 0.598</div>
+  </div>
+
+  <div class="card">
+    <a href="file:///C:/Users/pooja/Desktop/Riceplantdiseasedetector/data/val/Healthy Rice Leaf/20231006_163746.jpg" target="_blank">
+      <img src="file:///C:/Users/pooja/Desktop/Riceplantdiseasedetector/data/val/Healthy Rice Leaf/20231006_163746.jpg" alt="20231006_163746.jpg">
+    </a>
+    <div class="meta"><strong>Actual:</strong> Healthy Rice Leaf &nbsp; <strong>Pred:</strong> Brown Spot &nbsp; <strong>Conf:</strong> 0.371</div>
+  </div>
+
+  <div class="card">
+    <a href="file:///C:/Users/pooja/Desktop/Riceplantdiseasedetector/data/val/Healthy Rice Leaf/aug_0_1026.jpg" target="_blank">
+      <img src="file:///C:/Users/pooja/Desktop/Riceplantdiseasedetector/data/val/Healthy Rice Leaf/aug_0_1026.jpg" alt="aug_0_1026.jpg">
+    </a>
+    <div class="meta"><strong>Actual:</strong> Healthy Rice Leaf &nbsp; <strong>Pred:</strong> Brown Spot &nbsp; <strong>Conf:</strong> 0.581</div>
+  </div>
+
+  <div class="card">
+    <a href="file:///C:/Users/pooja/Desktop/Riceplantdiseasedetector/data/val/Healthy Rice Leaf/aug_0_1039.jpg" target="_blank">
+      <img src="file:///C:/Users/pooja/Desktop/Riceplantdiseasedetector/data/val/Healthy Rice Leaf/aug_0_1039.jpg" alt="aug_0_1039.jpg">
+    </a>
+    <div class="meta"><strong>Actual:</strong> Healthy Rice Leaf &nbsp; <strong>Pred:</strong> Sheath Blight &nbsp; <strong>Conf:</strong> 0.816</div>
+  </div>
+
+  <div class="card">
+    <a href="file:///C:/Users/pooja/Desktop/Riceplantdiseasedetector/data/val/Healthy Rice Leaf/aug_0_1118.jpg" target="_blank">
+      <img src="file:///C:/Users/pooja/Desktop/Riceplantdiseasedetector/data/val/Healthy Rice Leaf/aug_0_1118.jpg" alt="aug_0_1118.jpg">
+    </a>
+    <div class="meta"><strong>Actual:</strong> Healthy Rice Leaf &nbsp; <strong>Pred:</strong> Sheath Blight &nbsp; <strong>Conf:</strong> 0.952</div>
+  </div>
+
+  <div class="card">
+    <a href="file:///C:/Users/pooja/Desktop/Riceplantdiseasedetector/data/val/Healthy Rice Leaf/aug_0_1149.jpg" target="_blank">
+      <img src="file:///C:/Users/pooja/Desktop/Riceplantdiseasedetector/data/val/Healthy Rice Leaf/aug_0_1149.jpg" alt="aug_0_1149.jpg">
+    </a>
+    <div class="meta"><strong>Actual:</strong> Healthy Rice Leaf &nbsp; <strong>Pred:</strong> Brown Spot &nbsp; <strong>Conf:</strong> 0.977</div>
+  </div>
+
+  <p>...more entries omitted for brevity (file `backend/eval_summary.txt` contains the full list).</p>
+</body>
+</html>

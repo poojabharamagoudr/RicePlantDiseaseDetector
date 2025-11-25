@@ -12,8 +12,8 @@ from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import io
 
 
-app = Flask(__name__)
-CORS(app)
+# Flask app will be created after we compute `ROOT` so static paths resolve.
+
 
 # -------------------------------
 # Paths
@@ -22,16 +22,36 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 MODEL_PATH = os.path.join(ROOT, "model", "rice_disease_mobilenetv2.h5")
 INFO_PATH = os.path.join(os.path.dirname(__file__), "disease_info.json")
 
+# Serve frontend static files from the top-level `frontend/` folder so the
+# app can host both the API and the web UI on the same origin.
+FRONTEND_PATH = os.path.join(ROOT, "frontend")
+app = Flask(__name__, static_folder=FRONTEND_PATH, static_url_path="")
+CORS(app)
+
 # -------------------------------
 # Load model + disease info
 # -------------------------------
-print("🔄 Loading TensorFlow model...")
-MODEL = tf.keras.models.load_model(MODEL_PATH)
-print("✅ Model loaded!")
+MODEL = None
+DISEASE_INFO = {}
+try:
+    print("🔄 Loading TensorFlow model...")
+    MODEL = tf.keras.models.load_model(MODEL_PATH)
+    print("✅ Model loaded!")
+except Exception as e:
+    print("⚠️ Could not load model:", e)
+    print("The API will still run but /predict will return an error until a valid model is available.")
 
-with open(INFO_PATH, "r") as f:
-    DISEASE_INFO = json.load(f)
-print("✅ disease_info.json loaded!")
+try:
+    with open(INFO_PATH, "r", encoding='utf-8') as f:
+        DISEASE_INFO = json.load(f)
+    print("✅ disease_info.json loaded!")
+except Exception as e:
+    print("⚠️ Could not load disease_info.json:", e)
+
+# Configurable confidence threshold: predictions below this will be reported as Unknown
+CONFIDENCE_THRESHOLD = float(os.environ.get("CONFIDENCE_THRESHOLD", "0.6"))
+# Label used when image is not a rice leaf or prediction is uncertain
+UNKNOWN_LABEL = "Unknown Image"
 
 # -------------------------------
 # Class names (correct order)
@@ -107,6 +127,12 @@ def predict_from_pil(pil_img):
 def health():
     return jsonify({"status": "ok"})
 
+
+@app.route("/")
+def index():
+    # Serve the frontend index.html from the configured static folder
+    return app.send_static_file('index.html')
+
 @app.route("/predict", methods=["POST"])
 def predict():
     if "image" not in request.files:
@@ -115,6 +141,10 @@ def predict():
     file = request.files["image"]
 
     try:
+        # Ensure the model is loaded
+        if MODEL is None:
+            return jsonify({"error": "Model not available on server. Check server logs and ensure model file exists."}), 503
+
         # Read image into PIL
         img = Image.open(file.stream)
 
@@ -130,6 +160,17 @@ def predict():
 
         # Otherwise run model prediction
         result = predict_from_pil(img)
+
+        # If prediction confidence is below threshold, return Unknown
+        if result.get('confidence', 0.0) < CONFIDENCE_THRESHOLD:
+            return jsonify({
+                "label": UNKNOWN_LABEL,
+                "confidence": round(float(result.get('confidence', 0.0)), 3),
+                "treatment": "",
+                "govt_schemes": [],
+                "message": "Prediction confidence below threshold; result is inconclusive."
+            })
+
         return jsonify(result)
 
     except Exception as e:

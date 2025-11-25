@@ -1,0 +1,1 @@
+.info-tip-wrapper{position:fixed;padding:6px 12px;color:#fff;background-color:#000;border-radius:2px;opacity:.9;z-index:99}.info-tip-wrapper:after{content:"";position:absolute;right:-4px;top:7px;width:10px;height:10px;opacity:.9;background-color:#000;transform:rotate(45deg)}.info-tip-wrapper.coop-sel:after{display:none}.info-tip-wrapper.page-tip{transform:translateY(-50%)}
