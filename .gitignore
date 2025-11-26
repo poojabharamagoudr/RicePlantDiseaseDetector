@@ -14,7 +14,7 @@ build/
 dist/
 *.egg-info/
 
-# Jupyter Notebook checkpoints
+# Jupyter
 .ipynb_checkpoints/
 
 # OS files
@@ -26,8 +26,33 @@ Thumbs.db
 .idea/
 
 # Logs
-.log
+*.log
 
-# Model artifacts (keep if you want to commit; uncomment to ignore)
-# model/*.h5
-model/*
+# Node (Frontend)
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/dist/
+frontend/build/
+
+# React build
+build/
+dist/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# TensorFlow / ML
+*.tflite
+*.pb
+*.ckpt
+
+# Model directory except LFS files
+model/*.zip
+model/*.tar.gz
+
+# Misc
+*.tmp
+*.swp
