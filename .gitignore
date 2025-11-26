@@ -56,3 +56,8 @@ model/*.tar.gz
 # Misc
 *.tmp
 *.swp
+
+# Ignore model directory except LFS-tracked .h5 files
+model/*
+!model/*.h5
+
