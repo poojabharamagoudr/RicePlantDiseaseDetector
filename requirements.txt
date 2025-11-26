@@ -113,3 +113,5 @@ wheel==0.45.1
 wrapt==1.17.3
 yarl==1.20.1
 
+gunicorn==21.2.0
+
